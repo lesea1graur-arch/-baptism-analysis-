@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализ обряда крещения | Baptism Analysis</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border: #30363d;
+            --text-primary: #e6edf3;
+            --text-secondary: #7d8590;
+            --accent: #2f81f7;
+            --accent-hover: #388bfd;
+            --success: #3fb950;
+            --gold: #d29922;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(47,129,247,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            background: linear-gradient(90deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            text-align: center;
+            padding: 16px 24px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            min-width: 140px;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 60px;
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--gold));
+        }
+        .stage {
+            position: relative;
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        .stage:nth-child(1) { animation-delay: 0.1s; }
+        .stage:nth-child(2) { animation-delay: 0.2s; }
+        .stage:nth-child(3) { animation-delay: 0.3s; }
+        .stage:nth-child(4) { animation-delay: 0.4s; }
+        .stage:nth-child(5) { animation-delay: 0.5s; }
+        .stage:nth-child(6) { animation-delay: 0.6s; }
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .stage-dot {
+            position: absolute;
+            left: -44px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            background: var(--bg-primary);
+            border: 3px solid var(--accent);
+            border-radius: 50%;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        .stage:hover .stage-dot {
+            background: var(--accent);
+            box-shadow: 0 0 12px rgba(47,129,247,0.5);
+            transform: scale(1.2);
+        }
+        .stage-time {
+            position: absolute;
+            left: -100px;
+            top: 6px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-variant-numeric: tabular-nums;
+        }
+        .stage-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .stage-card:hover {
+            border-color: var(--accent);
+            transform: translateX(8px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .stage-image {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .stage-card:hover .stage-image {
+            transform: scale(1.03);
+        }
+        .stage-content {
+            padding: 24px;
+        }
+        .stage-number {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stage-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .stage-desc {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-top: 16px;
+        }
+        .badge-orthodox {
+            background: rgba(47,129,247,0.1);
+            color: var(--accent);
+            border: 1px solid rgba(47,129,247,0.2);
+        }
+        .badge-sacrament {
+            background: rgba(211,153,34,0.1);
+            color: var(--gold);
+            border: 1px solid rgba(211,153,34,0.2);
+        }
+        footer {
+            text-align: center;
+            padding: 40px;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .github-link {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .github-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .timeline { padding-left: 40px; }
+            .stage-time { left: -70px; font-size: 0.7rem; }
+            h1 { font-size: 1.8rem; }
+            .stage-image { height: 220px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⛪ Анализ Таинства Крещения</h1>
+            <p class="subtitle">
+                Визуальный разбор православного обряда крещения взрослого мужчины. 
+                Троекратное погружение в купель согласно восточному обряду.
+            </p>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">32.3с</div>
+                    <div class="stat-label">Длительность</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">FPS</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Этапов обряда</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">3×</div>
+                    <div class="stat-label">Погружения</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="timeline">
+            <div class="stage">
+                <div class="stage-time">00:00</div>
+                <div class="stage-dot"></div>
+                <div class="stage-card">
+                    <img src="frames/frame_0.5s.jpg" alt="Подготовка" class="stage-image">
+                    <div class="stage-content">
+                        <span class="stage-number">Этап 1</span>
+                        <h3 class="stage-title">Подготовка к обряду</h3>
+                        <p class="stage-desc">
+                            Священник в облачении даёт последние наставления крещаемому у серебряной купели. 
+                            Раскрытое Евангелие на аналое, зажжённые свечи — всё готово для совершения таинства.
+                        </p>
+                        <span class="badge badge-orthodox">🕯️ Исповедь и наставление</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stage">
+                <div class="stage-time">00:03</div>
+                <div class="stage-dot"></div>
+                <div class="stage-card">
+                    <img src="frames/frame_3.0s.jpg" alt="Первое погружение" class="stage-image">
+                    <div class="stage-content">
+                        <span class="stage-number">Этап 2</span>
+                        <h3 class="stage-title">Первое погружение</h3>
+                        <p class="stage-desc">
+                            Крещаемый наклоняется над купелью, касаясь лбом воды. Священник придерживает его, 
+                            готовя к первому погружению во имя Отца. Начало духовного рождения.
+                        </p>
+                        <span class="badge badge-sacrament">💧 «Во имя Отца»</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stage">
+                <div class="stage-time">00:08</div>
+                <div class="stage-dot"></div>
+                <div class="stage-card">
+                    <img src="frames/frame_8.0s.jpg" alt="Молитва" class="stage-image">
+                    <div class="stage-content">
+                        <span class="stage-number">Этап 3</span>
+                        <h3 class="stage-title">Молитва над водой</h3>
+                        <p class="stage-desc">
+                            Продолжительное пребывание в воде. Священник читает молитву, совершая 
+                            знак креста над крещаемым. Вода освящается и становится средством благодати.
+                        </p>
+                        <span class="badge badge-orthodox">📖 Чин освящения воды</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stage">
+                <div class="stage-time">00:15</div>
+                <div class="stage-dot"></div>
+                <div class="stage-card">
+                    <img src="frames/frame_15.0s.jpg" alt="Третье погружение" class="stage-image">
+                    <div class="stage-content">
+                        <span class="stage-number">Этап 4</span>
+                        <h3 class="stage-title">Третье погружение</h3>
+                        <p class="stage-desc">
+                            Кульминация таинства — троекратное погружение во имя Отца и Сына и Святого Духа. 
+                            Крещаемый полностью погружается в купель, умирая для греха и рождаясь для новой жизни.
+                        </p>
+                        <span class="badge badge-sacrament">✝️ «Во имя Отца и Сына и Святого Духа»</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stage">
+                <div class="stage-time">00:24</div>
+                <div class="stage-dot"></div>
+                <div class="stage-card">
+                    <img src="frames/frame_24.0s.jpg" alt="Восхождение" class="stage-image">
+                    <div class="stage-content">
+                        <span class="stage-number">Этап 5</span>
+                        <h3 class="stage-title">Восхождение из воды</h3>
+                        <p class="stage-desc">
+                            Крещаемый поднимается из купели — уже новый человек во Христе. Священник благословляет, 
+                            завершая акт погребения со Христом и соединения с Ним в воскресении.
+                        </p>
+                        <span class="badge badge-orthodox">🕊️ Новое творение</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="stage">
+                <div class="stage-time">00:28</div>
+                <div class="stage-dot"></div>
+                <div class="stage-card">
+                    <img src="frames/frame_28.5s.jpg" alt="Венчание полотенцем" class="stage-image">
+                    <div class="stage-content">
+                        <span class="stage-number">Этап 6</span>
+                        <h3 class="stage-title">Венчание полотенцем</h3>
+                        <p class="stage-desc">
+                            Завершающий акт — крещаемый вытирается белым полотенцем, символизирующим 
+                            свет Христов и новую одежду праведности. Обряд благополучно совершён.
+                        </p>
+                        <span class="badge badge-sacrament">👑 «Облечёмся во Христа»</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>📹 Видеоанализ сгенерирован с помощью Python + OpenCV</p>
+            <p style="margin-top:8px">
+                <a href="#" class="github-link">github.com/lesea1graur-arch/-baptism-analysis-</a> · 
+                Православный обряд · Восточное исповедание
+            </p>
+        </footer>
+    </div>
+    
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('.stage').forEach(stage => observer.observe(stage));
+        
+        document.querySelectorAll('.stage-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const img = card.querySelector('.stage-image');
+                window.open(img.src, '_blank');
+            });
+        });
+    </script>
+</body>
+</html>

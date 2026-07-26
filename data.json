@@ -1,0 +1,55 @@
+{
+  "video_duration": 32.3,
+  "fps": 24.0,
+  "total_frames": 774,
+  "stages": [
+    {
+      "time": 0.5,
+      "label": "Подготовка к обряду",
+      "desc": "Священник даёт наставления у купели",
+      "frame_file": "frame_0.5s.jpg",
+      "timestamp": 0.5,
+      "index": 1
+    },
+    {
+      "time": 3.0,
+      "label": "Первое погружение",
+      "desc": "Крещаемый наклоняется над купелью",
+      "frame_file": "frame_3.0s.jpg",
+      "timestamp": 3.0,
+      "index": 2
+    },
+    {
+      "time": 8.0,
+      "label": "Молитва над водой",
+      "desc": "Священник совершает молитву, крещаемый погружён",
+      "frame_file": "frame_8.0s.jpg",
+      "timestamp": 8.0,
+      "index": 3
+    },
+    {
+      "time": 15.0,
+      "label": "Третье погружение",
+      "desc": "Полное троекратное погружение в купель",
+      "frame_file": "frame_15.0s.jpg",
+      "timestamp": 15.0,
+      "index": 4
+    },
+    {
+      "time": 24.0,
+      "label": "Восхождение из воды",
+      "desc": "Крещаемый поднимается, обряд завершён",
+      "frame_file": "frame_24.0s.jpg",
+      "timestamp": 24.0,
+      "index": 5
+    },
+    {
+      "time": 28.5,
+      "label": "Венчание полотенцем",
+      "desc": "Вытирание священным полотенцем",
+      "frame_file": "frame_28.5s.jpg",
+      "timestamp": 28.5,
+      "index": 6
+    }
+  ]
+}
